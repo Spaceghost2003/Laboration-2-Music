@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,8 @@ namespace Laboration_2_Music.ViewModel
 
         public RelayCommand InsertTrackCommand { get; }
         public RelayCommand RemoveTrackCommand { get; }
-
+        public RelayCommand GetDisplayTracksCommand { get; }
+        
         private ObservableCollection<Playlist> _playLists;
         public ObservableCollection<Playlist> PlayLists
         {
@@ -46,6 +48,7 @@ namespace Laboration_2_Music.ViewModel
             set {
                 _selectedPlaylist = value;
                 OnPropertyChanged();
+                
             }
         }
 
@@ -61,9 +64,21 @@ namespace Laboration_2_Music.ViewModel
             }
         }
 
+        private int _playlistIdentifier = 3;
+        
+        public int PlaylistIdentifier
+        {
+            get { return _playlistIdentifier; }
+            set
+            {
+                _playlistIdentifier = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         private ObservableCollection<Track> _displayTracks;
-
+        
         public ObservableCollection<Track> DisplayTracks
         {
             get { return _displayTracks; }
@@ -92,21 +107,25 @@ namespace Laboration_2_Music.ViewModel
 
             RemoveTrackCommand = new RelayCommand(RemoveTrack);
             InsertTrackCommand = new RelayCommand(InsertTrack);
+           
             AllTracks = GetAllTracks();
 
             using var context = new EveryloopContext();
             PlayLists =GetPlaylists();
-
-           
-            
-            if (SelectedPlaylist == null)
+            if (SelectedPlaylist != null)
             {
-                DisplayTracks = GetTracks(1);
-            }else if(SelectedPlaylist != null)
+                DisplayTracks = GetTracks(PlaylistIdentifier);
+                
+            }else if( SelectedPlaylist == null )
             {
-
-            DisplayTracks = GetTracks(SelectedPlaylist.PlaylistId);
+                DisplayTracks = GetTracks(PlaylistIdentifier);
+                
             }
+            
+            //PlaylistIdentifier = SelectedPlaylist.PlaylistId;
+             
+           // DisplayTracks = GetTracks(SelectedPlaylist.PlaylistId);
+            
         }
 
         public static ObservableCollection<Track> GetAllTracks()
@@ -135,40 +154,41 @@ namespace Laboration_2_Music.ViewModel
 
         public ObservableCollection<Track> GetTracks(int playlistId)
         {
-            /*            int pLId = 3;
-                        using var context = new EveryloopContext();
-
-                        var playListTracksQuery = context.PlaylistTracks;
-                        var tracksQuery = context.Tracks;
-
-                        ObservableCollection<PlaylistTrack> AllPlaylistTracks = new ObservableCollection<PlaylistTrack>(playListTracksQuery.ToList());
-                        ObservableCollection<Track> AllTracks = new ObservableCollection<Track>(tracksQuery.ToList());
-
-                        var filteredTracks = new ObservableCollection<Track>(
-                            AllTracks.Join(
-                                AllPlaylistTracks.Where(pt => pt.PlaylistId == playlistId),
-                                track => track.TrackId,
-                                playlistTrack => playlistTrack.TrackId,
-                                (track, _) => track 
-                            )
-                        );
-                        return filteredTracks;*/
 
             using var context = new EveryloopContext();
 
-            ObservableCollection<PlaylistTrack> fpt = new ObservableCollection<PlaylistTrack>(context.PlaylistTracks.Where(pt=> pt.PlaylistId == SelectedPlaylist.PlaylistId).ToList());
+      
+            var playlistTracks = context.PlaylistTracks
+                .Where(pt => pt.PlaylistId == playlistId)
+                .ToList();
+            var trackIds = playlistTracks.Select(pt => pt.TrackId).ToList();
+            var tracks = context.Tracks
+                .Where(t => trackIds.Contains(t.TrackId))
+                .ToList();
 
-            ObservableCollection<Track> filteredTracks = new ObservableCollection<Track>
-                (
-                from t in AllTracks
-                where (t.TrackId == fpt.TrackId  )
-                select t
-
-
-                ); ;
-
-            
+          
+            return new ObservableCollection<Track>(tracks);
         }
+
+
+
+        public void GetDisplayTracks(object sender, RoutedEventArgs e)
+        {
+            using var context = new EveryloopContext();
+
+
+            var playlistTracks = context.PlaylistTracks
+                .Where(pt => pt.PlaylistId == SelectedPlaylist.PlaylistId)
+                .ToList();
+            var trackIds = playlistTracks.Select(pt => pt.TrackId).ToList();
+            var tracks = context.Tracks
+                .Where(t => trackIds.Contains(t.TrackId))
+                .ToList();
+            DisplayTracks = new ObservableCollection<Track>(tracks);
+        }
+
+
+
 
             public  void InsertTrack(object obj)
         {
