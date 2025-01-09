@@ -87,7 +87,10 @@ namespace Laboration_2_Music.Migrations
             modelBuilder.Entity("Laboration_2_Music.Playlist", b =>
                 {
                     b.Property<int>("PlaylistId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlaylistId"));
 
                     b.Property<string>("Name")
                         .HasMaxLength(120)
@@ -110,7 +113,7 @@ namespace Laboration_2_Music.Migrations
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("PlaylistTracks");
+                    b.ToTable("playlist_track", "music");
                 });
 
             modelBuilder.Entity("Laboration_2_Music.Track", b =>
@@ -156,21 +159,6 @@ namespace Laboration_2_Music.Migrations
                     b.ToTable("tracks", "music");
                 });
 
-            modelBuilder.Entity("PlaylistTrack", b =>
-                {
-                    b.Property<int>("PlaylistsPlaylistId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TracksTrackId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlaylistsPlaylistId", "TracksTrackId");
-
-                    b.HasIndex("TracksTrackId");
-
-                    b.ToTable("PlaylistTrack", "music");
-                });
-
             modelBuilder.Entity("Laboration_2_Music.Album", b =>
                 {
                     b.HasOne("Laboration_2_Music.Artist", "Artist")
@@ -187,14 +175,14 @@ namespace Laboration_2_Music.Migrations
                     b.HasOne("Laboration_2_Music.Playlist", "Playlist")
                         .WithMany()
                         .HasForeignKey("PlaylistId")
-                        .IsRequired()
-                        .HasConstraintName("FK_playlist_track_playlists");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Laboration_2_Music.Track", "Track")
                         .WithMany()
                         .HasForeignKey("TrackId")
-                        .IsRequired()
-                        .HasConstraintName("FK_playlist_track_tracks");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Playlist");
 
@@ -224,21 +212,6 @@ namespace Laboration_2_Music.Migrations
                     b.Navigation("Genre");
 
                     b.Navigation("MediaType");
-                });
-
-            modelBuilder.Entity("PlaylistTrack", b =>
-                {
-                    b.HasOne("Laboration_2_Music.Playlist", null)
-                        .WithMany()
-                        .HasForeignKey("PlaylistsPlaylistId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Laboration_2_Music.Track", null)
-                        .WithMany()
-                        .HasForeignKey("TracksTrackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Laboration_2_Music.Album", b =>

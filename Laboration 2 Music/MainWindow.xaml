@@ -24,7 +24,7 @@
                         Command="{Binding RemoveTrackCommand}"
                         Margin="0 0 0 10"/>
             <TextBlock Text="Choose Playlist"/>
-            <ComboBox ItemsSource="{Binding PlayLists}"  DisplayMemberPath="Name"
+            <ComboBox ItemsSource="{Binding PlayLists, UpdateSourceTrigger=PropertyChanged}"  DisplayMemberPath="Name"
           SelectedItem="{Binding SelectedPlaylist}" Height="20" Margin=" 0 0 0 10"/>
             <Button Content="Remove Playlist"
                     Command="{Binding RemovePlaylistCommand}"

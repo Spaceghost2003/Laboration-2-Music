@@ -274,7 +274,7 @@ namespace Laboration_2_Music.ViewModel
                     context.PlaylistTracks.Add(newTrack);
                     context.SaveChanges();
                     DisplayTracks = GetTracks(SelectedPlaylist.PlaylistId);
-                    MessageBox.Show("Track added to playlist successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                   
                 }
                 else
                 {
