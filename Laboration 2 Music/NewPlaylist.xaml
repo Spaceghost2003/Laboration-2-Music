@@ -1,0 +1,20 @@
+﻿<Window x:Class="Laboration_2_Music.NewPlaylist"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Laboration_2_Music"
+        mc:Ignorable="d"
+        Title="NewPlaylist" Height="200" Width="200">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock Text="Select Playlist name:"/>
+            <TextBox Text="{Binding InsertedPlaylistName}"/>
+            <Button Content="Create Playlist"
+                    Command="{Binding InsertPlaylistCommand}"/>
+
+
+        </StackPanel>
+    </Grid>
+</Window>

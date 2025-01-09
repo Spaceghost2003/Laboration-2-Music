@@ -78,7 +78,7 @@ public partial class EveryloopContext : DbContext
         {
             entity.ToTable("playlists", "music");
 
-            entity.Property(e => e.PlaylistId).ValueGeneratedNever();
+            entity.Property(e => e.PlaylistId).ValueGeneratedOnAdd();
             entity.Property(e => e.Name).HasMaxLength(120);
         });
 
