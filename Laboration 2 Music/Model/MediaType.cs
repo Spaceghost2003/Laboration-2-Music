@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 namespace Laboration_2_Music;
-
 public partial class MediaType
 {
     public int MediaTypeId { get; set; }

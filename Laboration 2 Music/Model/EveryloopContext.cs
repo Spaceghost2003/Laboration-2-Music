@@ -89,13 +89,13 @@ public partial class EveryloopContext : DbContext
 
             entity.HasOne(d => d.Playlist).WithMany()
                 .HasForeignKey(d => d.PlaylistId);
-               // .OnDelete(DeleteBehavior.ClientSetNull)
-               //.HasConstraintName("FK_playlist_track_playlists");
+            // .OnDelete(DeleteBehavior.ClientSetNull)
+            //.HasConstraintName("FK_playlist_track_playlists");
 
             entity.HasOne(d => d.Track).WithMany()
                 .HasForeignKey(d => d.TrackId);
-                //.OnDelete(DeleteBehavior.ClientSetNull)
-                //.HasConstraintName("FK_playlist_track_tracks");
+            //.OnDelete(DeleteBehavior.ClientSetNull)
+            //.HasConstraintName("FK_playlist_track_tracks");
         });
 
         modelBuilder.Entity<Track>(entity =>

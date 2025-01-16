@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Laboration_2_Music.Migrations
 {
     [DbContext(typeof(EveryloopContext))]
-    [Migration("20250109213535_DeployMigration")]
-    partial class DeployMigration
+    [Migration("20250116083740_ThisShouldWork")]
+    partial class ThisShouldWork
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

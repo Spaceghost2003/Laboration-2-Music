@@ -28,7 +28,4 @@ public partial class Track
     public virtual Genre? Genre { get; set; }
 
     public virtual MediaType MediaType { get; set; } = null!;
-
-    
 }
-//string Name, int MediaTypeId, int milliseconds,

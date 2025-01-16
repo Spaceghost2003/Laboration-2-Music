@@ -6,9 +6,9 @@ namespace Laboration_2_Music;
 
 public partial class PlaylistTrack
 {
-   
+
     public int PlaylistId { get; set; }
-    
+
 
     public int TrackId { get; set; }
 
